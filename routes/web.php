@@ -1,15 +1,26 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
-// 1. La página de inicio (Donde se muestran todas las vainas)
+// La página de inicio (Donde se muestran todas las vainas)
 Route::get('/', [ProductController::class, 'index'])->name('home');
 
-// 2. El detalle de una vaina específica (Cuando hacen clic en una para verla más grande)
+// El detalle de una vaina específica (Cuando hacen clic en una para verla más grande)
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.detail');
 
-// 3. El panel de administración (Donde tú o tu mamá van a loguearse para subir fotos)
+// Rutas iniciales del carrito
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
+
+//RUTAS DEL CARRITO
+//rutas para aumentar, disminuir y eliminar la cantidad de un producto 
+Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
+Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
+Route::post('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart.delete');
+
+// El panel de administración (Donde tú o tu mamá van a loguearse para subir fotos)
 Route::get('/admin/dashboard', function () {
     return "Aquí irá el panel de administración más adelante";
 });

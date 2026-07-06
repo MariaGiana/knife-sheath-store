@@ -1,32 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Tienda Online. Vainas Artesanales</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-</head>
-<body>
-
-    <div class="page-loading active">
-        <div class="page-loading-inner">
-            <div class="spinner"></div>
-            <span>cargando...</span>
-        </div>
-    </div>
-    
-    <header>Aquí irá tu Header viejo más adelante</header>
-
-    <div class="super_container">
-        <div class="container mt-5 pt-5">
-            <div class="row align-items-center">
-                <div class="col-lg-12 text-center">
-                    <div class="section_title">
-                        <img class="img-fluid" src="{{ asset('assets/images/manos212.jpg') }}" alt="portada">
-                    </div>
-                </div>
-            </div>
-
+ 
+   @extends('layouts.app')
+   @section('content')
             <div class="container mt-2 pt-2">
                 <div class="row align-items-center">
                     <div class="col-lg-12 text-center">
@@ -116,8 +90,14 @@
                                     </p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-success btn-sm">Añadir al carrito</button>
+                                    <button type="button" class="btn btn-secondary btn-block mt-2" data-bs-dismiss="modal">Cerrar</button>
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+    @csrf 
+    
+    <button type="submit" class="btn btn-primary btn-block mt-2">
+        <i class="bi bi-cart-plus"></i> Agregar al Carrito
+    </button>
+</form>
                                 </div>
                             </div>
                         </div>
@@ -126,10 +106,7 @@
             </div>
 
         </div>
-
-        <footer>Aquí irá tu Footer viejo más adelante</footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endsection
