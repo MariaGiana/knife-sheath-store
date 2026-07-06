@@ -44,14 +44,14 @@
                             
                             <div class="p-3" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                                 @if($product->fotos && $product->fotos->foto1)
-                                    <img src="{{ asset($product->fotos->foto1) }}" alt="{{ $product->nameProd }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                    <img src="{{ asset($product->fotos->foto1) }}" alt="{{ $product->name }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
                                 @else
                                     <span class="text-muted small">Sin imagen</span>
                                 @endif
                             </div>
 
                             <div class="card-body p-2">
-                                <h6 class="card-title text-dark fw-bold mb-1">{{ $product->nameProd }}</h6>
+                                <h6 class="card-title text-dark fw-bold mb-1">{{ $product->name }}</h6>
                                 <p class="text-success m-0 fw-bold">
                                     $ {{ number_format($product->precio, 0, '', '.') }}
                                 </p>
@@ -69,7 +69,7 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content text-start">
                                 <div class="modal-header">
-                                    <h5 class="modal-title fw-bold">{{ $product->nameProd }}</h5>
+                                    <h5 class="modal-title fw-bold">{{ $product->name }}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -112,7 +112,7 @@
                                     
                                     <p class="mt-3 mb-1 fw-bold text-secondary">Descripción:</p>
                                     <p class="text-muted small">
-                                        {{ $product->description_Prod ?? 'Este artesano no ha añadido una descripción todavía.' }}
+                                        {{ $product->description_product ?? 'Este artesano no ha añadido una descripción todavía.' }}
                                     </p>
                                 </div>
                                 <div class="modal-footer">

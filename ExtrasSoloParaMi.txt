@@ -110,14 +110,14 @@ Este es un buen html, pero esta todo mezclado:
                             
                             <div class="img-container">
                                 @if($product->fotos && $product->fotos->foto1)
-                                    <img class="card-img-top" src="{{ asset($product->fotos->foto1) }}" alt="{{ $product->nameProd }}">
+                                    <img class="card-img-top" src="{{ asset($product->fotos->foto1) }}" alt="{{ $product->name }}">
                                 @else
                                     <span class="text-muted">Sin imagen</span>
                                 @endif
                             </div>
 
                             <div class="card-body text-center d-flex flex-column justify-content-between">
-                                <h5 class="card-title card_title font-weight-bold">{{ $product->nameProd }}</h5>
+                                <h5 class="card-title card_title font-weight-bold">{{ $product->name }}</h5>
                                 <div>
                                     <hr>
                                     <p class="card-text p_puntos text-success fw-bold fs-5">
@@ -127,9 +127,9 @@ Este es un buen html, pero esta todo mezclado:
                             </div>
                             
                             <button type="button" class="blue_button btn_puntos open-modal-btn" 
-                                    data-name="{{ $product->nameProd }}"
+                                    data-name="{{ $product->name }}"
                                     data-price="$ {{ number_format($product->precio, 0, '', '.') }}"
-                                    data-desc="{{ $product->description_Prod ?? 'Sin descripción disponible.' }}"
+                                    data-desc="{{ $product->description_product ?? 'Sin descripción disponible.' }}"
                                     data-f1="{{ $product->fotos && $product->fotos->foto1 ? asset($product->fotos->foto1) : '' }}"
                                     data-f2="{{ $product->fotos && $product->fotos->foto2 ? asset($product->fotos->foto2) : '' }}"
                                     data-f3="{{ $product->fotos && $product->fotos->foto3 ? asset($product->fotos->foto3) : '' }}">
