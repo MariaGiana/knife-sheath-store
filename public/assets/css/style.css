@@ -301,4 +301,15 @@ body .hero-artesanal {
     .hero-content h1 {
         font-size: 3.2rem;
     }
+
+    /* Espaciado responsivo para los botones de la barra superior */
+.navbar .gap-2 {
+    gap: 0.5rem; /* Separación sutil entre los iconos */
+}
+}
+/* Forzar que el modal de consulta no sea gigantesco en pantallas grandes */
+@media (min-width: 576px) {
+    .modal-sm-custom {
+        max-width: 400px;
+    }
 }
