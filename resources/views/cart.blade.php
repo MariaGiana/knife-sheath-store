@@ -31,58 +31,63 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($cartItems as $item)
-                        <tr>
-                            <td>{{ $item->product->name }}</td>
-                            <td>
-    @if($item->product->fotos && $item->product->fotos->foto1)
-        <img src="{{ asset($item->product->fotos->foto1) }}" alt="{{ $item->product->name }}" width="50" style="object-fit: contain;">
-    @else
-        <span class="text-muted small">Sin imagen</span>
-    @endif
-</td>
-                            <td>${{ number_format($item->product->precio, 0, '', '.') }}</td>
-                            <td>
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <form action="{{ route('cart.decrease', $item->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary px-2 py-0">
-                                            <i class="bi bi-dash-lg"></i>
-                                        </button>
-                                    </form>
 
-                                    <span class="mx-3 font-weight-bold" style="font-size: 1.1rem;">
-                                        {{ $item->cantidad }}
-                                    </span>
+                @foreach($cartItems as $item)
+    <tr id="fila-carrito-{{ $item->id }}">
+        <td>{{ $item->product->name }}</td>
+        <td>
+            @if($item->product->fotos && $item->product->fotos->foto1)
+                <img src="{{ asset($item->product->fotos->foto1) }}" alt="{{ $item->product->name }}" width="50" style="object-fit: contain;">
+            @else
+                <span class="text-muted small">Sin imagen</span>
+            @endif
+        </td>
+        <td>${{ number_format($item->product->precio, 0, '', '.') }}</td>
+        <td>
+            <div class="d-flex align-items-center justify-content-center">
+                <form action="{{ route('cart.decrease', $item->id) }}" method="POST" class="d-inline form-cantidad-carrito">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-secondary px-2 py-0">
+                        <i class="bi bi-dash-lg"></i>
+                    </button>
+                </form>
 
-                                    <form action="{{ route('cart.increase', $item->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary px-2 py-0">
-                                            <i class="bi bi-plus-lg"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                            <td>${{ number_format($item->product->precio * $item->cantidad, 0, '', '.') }}</td>
-                            <td>
-                            <form action="{{ route('cart.delete', $item->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres quitar este producto del carrito?');">
-                                @csrf
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                        </tr>
-                    @endforeach
+                <span class="mx-3 font-weight-bold span-cantidad" style="font-size: 1.1rem;">
+                    {{ $item->cantidad }}
+                </span>
+
+                <form action="{{ route('cart.increase', $item->id) }}" method="POST" class="d-inline form-cantidad-carrito">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-secondary px-2 py-0">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </form>
+            </div>
+        </td>
+        <td class="td-subtotal">${{ number_format($item->product->precio * $item->cantidad, 0, '', '.') }}</td>
+        <td>
+            <form action="{{ route('cart.delete', $item->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres quitar este producto del carrito?');">
+                @csrf
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        </td>
+    </tr>
+@endforeach
                 </tbody>
             </table>
         </div>
 
         <div class="row justify-content-end mt-4">
             <div class="col-md-4 text-right">
-                <h4>Total a Pagar: <span class="text-success">${{ number_format($totalPagar, 0, '', '.') }}</span></h4>
-            </div>
+            <h4>Total a Pagar: <span id="total-general-carrito">${{ number_format($totalPagar, 0, '', '.') }}</span></h4>            </div>
         </div>
     @endif
 </div>
 @endsection
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="{{ asset('assets/js/carrito-ajax.js') }}"></script>
+
