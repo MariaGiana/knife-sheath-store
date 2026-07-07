@@ -63,66 +63,97 @@ class CartController extends Controller
     }
 
 
-    /**
- * AUMENTAR CANTIDAD (+1)
- */
-public function increase(Request $request, $id)
-{
-    $tokenCliente = session()->getId();
-    $cartItem = TemporaryOrder::where('token', $tokenCliente)->findOrFail($id);
-    
-    $cartItem->cantidad += 1;
-    $cartItem->save();
+        public function increase(Request $request, $id)
+        {
+            $tokenCliente = session()->getId();
+            $cartItem = TemporaryOrder::where('token', $tokenCliente)->findOrFail($id);
+            
+            $cartItem->cantidad += 1;
+            $cartItem->save();
 
-    return $this->jsonCartResponse($request, $tokenCliente, $cartItem);
-}
+            return $this->jsonCartResponse($request, $tokenCliente, $cartItem);
+        }
 
-public function decrease(Request $request, $id)
-{
-    $tokenCliente = session()->getId();
-    $cartItem = TemporaryOrder::where('token', $tokenCliente)->findOrFail($id);
+        public function decrease(Request $request, $id)
+        {
+            $tokenCliente = session()->getId();
+            $cartItem = TemporaryOrder::where('token', $tokenCliente)->findOrFail($id);
 
-    if ($cartItem->cantidad > 1) {
-        $cartItem->cantidad -= 1;
-        $cartItem->save();
-        return $this->jsonCartResponse($request, $tokenCliente, $cartItem);
-    } else {
-        // Si era 1 y bajan, se elimina
-        $cartItem->delete();
-        return $this->jsonCartResponse($request, $tokenCliente, null);
-    }
-}
+            if ($cartItem->cantidad > 1) {
+                $cartItem->cantidad -= 1;
+                $cartItem->save();
+                return $this->jsonCartResponse($request, $tokenCliente, $cartItem);
+            } else {
+                // Si era 1 y bajan, se elimina
+                $cartItem->delete();
+                return $this->jsonCartResponse($request, $tokenCliente, null);
+            }
+        }
+
+        public function updateQuantity(Request $request, $id)
+        {
+            $tokenCliente = session()->getId();
+            
+            $request->validate([
+                'cantidad' => 'required|integer|min:1'
+            ]);
+
+            $cartItem = TemporaryOrder::where('token', $tokenCliente)->findOrFail($id);
+            
+            // Asignamos la cantidad exacta que escribió el usuario
+            $cartItem->cantidad = $request->cantidad;
+            $cartItem->save();
+
+            // Calculamos los totales para la respuesta AJAX
+            $items = TemporaryOrder::where('token', $tokenCliente)->get();
+            $totalGeneral = $items->sum(function($item) {
+                return $item->product->precio * $item->cantidad;
+            });
+            $totalProductos = $items->sum('cantidad');
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'status' => 'success',
+                    'subtotal' => '$' . number_format($cartItem->product->precio * $cartItem->cantidad, 0, '', '.'),
+                    'totalGeneral' => '$' . number_format($totalGeneral, 0, '', '.'),
+                    'cartCount' => $totalProductos
+                ]);
+            }
+
+            return redirect()->back();
+        }
 
 
-public function destroy($id)
-{
-    // Buscamos el registro que coincida con el ID y el token actual del cliente, y lo borramos
-    TemporaryOrder::where('token', session()->getId())->findOrFail($id)->delete();
+        public function destroy($id)
+        {
+            // Buscamos el registro que coincida con el ID y el token actual del cliente, y lo borramos
+            TemporaryOrder::where('token', session()->getId())->findOrFail($id)->delete();
 
-    // Redireccionamos de vuelta al carrito con un mensaje de éxito
-    return redirect()->route('cart.show')->with('success', 'Producto eliminado del carrito.');
-}
+            // Redireccionamos de vuelta al carrito con un mensaje de éxito
+            return redirect()->route('cart.show')->with('success', 'Producto eliminado del carrito.');
+        }
 
-private function jsonCartResponse($request, $tokenCliente, $cartItem)
-{
-    // Calculamos el total general actual de la base de datos
-    $items = TemporaryOrder::where('token', $tokenCliente)->get();
-    $totalGeneral = $items->sum(function($item) {
-        return $item->product->precio * $item->cantidad;
-    });
-    $totalProductos = $items->sum('cantidad');
 
-    if ($request->ajax() || $request->wantsJson()) {
-        return response()->json([
-            'status' => 'success',
-            'removed' => $cartItem ? false : true, // Le avisa a JS si debe borrar la fila entera de la pantalla
-            'cantidad' => $cartItem ? $cartItem->cantidad : 0,
-            'subtotal' => $cartItem ? '$' . number_format($cartItem->product->precio * $cartItem->cantidad, 0, '', '.') : '$0',
-            'totalGeneral' => '$' . number_format($totalGeneral, 0, '', '.'),
-            'cartCount' => $totalProductos
-        ]);
-    }
+        private function jsonCartResponse($request, $tokenCliente, $cartItem)
+        {
+            // Calculamos el total general actual de la base de datos
+            $items = TemporaryOrder::where('token', $tokenCliente)->get();
+            $totalGeneral = $items->sum(function($item) {
+                return $item->product->precio * $item->cantidad;
+            });
+            $totalProductos = $items->sum('cantidad');
 
-    return redirect()->back();
-}
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'status' => 'success',
+                    'removed' => $cartItem ? false : true, // Le avisa a JS si debe borrar la fila entera de la pantalla
+                    'cantidad' => $cartItem ? $cartItem->cantidad : 0,
+                    'subtotal' => $cartItem ? '$' . number_format($cartItem->product->precio * $cartItem->cantidad, 0, '', '.') : '$0',
+                    'totalGeneral' => '$' . number_format($totalGeneral, 0, '', '.'),
+                    'cartCount' => $totalProductos
+                ]);
+            }
+
+            return redirect()->back();
+        }
 }

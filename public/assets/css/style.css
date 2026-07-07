@@ -1,0 +1,304 @@
+/* IMPORTAMOS FUENTES LINDAS DESDE GOOGLE FONTS */
+/* IMPORTAMOS FUENTES */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* VARIABLES GLOBALES DE DISEÑO (Basadas en tu modal) */
+:root {
+    --color-fondo-crema: #fdf8e6;       /* El amarillo tenue del modal */
+    --color-texto-oscuro: #33333b;     /* Tu gris oscuro principal */
+    --color-boton-azul: #4b5382;       /* El azul acero para acciones */
+    --color-boton-hover: #3a4066;
+    --color-dorado-detalle: #CDA434;
+    --color-boton-azul: #4A2E1B;       /* Marrón Tabaco profundo */
+    --color-boton-hover: #362113;      /* Un tono más oscuro al pasar el mouse */
+
+}
+
+/* 1. Fondo de la página completo con el cuero (Fijo) */
+body {
+    background-image: url("../images/cuero2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-texto-oscuro);
+}
+
+/* 3. Sección "Hero" superior (Manos) */
+.hero-artesanal {
+    position: relative;
+    width: 100%;
+    height: 280px; 
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url("../images/manos212.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hero-content {
+    padding: 15px 35px;
+    background-color: rgba(51, 51, 59, 0.6); 
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 90%;
+}
+
+.hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-dorado-detalle);
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.hero-content p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #f5f5f5;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   ESTILOS UNIFICADOS CON EL COLOR DEL MODAL (#fdf8e6)
+   ========================================================================== */
+
+/* Cajas contenedoras principales (Carrito y Tarjetas de la Tienda) */
+.container .cart-container-box,
+.container .product-card-artesanal {
+    background-color: var(--color-fondo-crema);
+    border: 1px solid rgba(51, 51, 59, 0.1);
+    border-radius: 12px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Caja del carrito específica */
+.container .cart-container-box {
+    padding: 35px;
+}
+
+/* Estructura de Tarjetas de la Tienda */
+.container .product-card-artesanal {
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.container .product-card-artesanal:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Contenedor de la foto (Mismo fondo blanco limpio del modal) */
+.container .product-img-container {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(51, 51, 59, 0.08);
+}
+
+/* Títulos y textos tipográficos */
+.title-cart,
+.product-body-artesanal .product-title-artesanal {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--color-texto-oscuro);
+}
+
+/* Formato de Precios */
+.product-body-artesanal .product-price-artesanal {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: var(--color-texto-oscuro);
+}
+
+/* ==========================================================================
+   ESTILOS DE TABLA (TRANSLÚCIDA CON BASE MARFIL)
+   ========================================================================== */
+.cart-container-box .table.table-custom {
+    color: var(--color-texto-oscuro);
+    border: 1px solid rgba(51, 51, 59, 0.1);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cart-container-box .table-custom {
+    --bs-table-bg: rgba(255, 255, 255, 0.5); /* Fondo blanco translúcido suave sobre el crema */
+    --bs-table-striped-bg: transparent;
+    --bs-table-active-bg: transparent;
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.8);
+    --bs-table-border-color: rgba(51, 51, 59, 0.1);
+    --bs-table-color: var(--color-texto-oscuro);
+}
+
+.cart-container-box .table-custom thead th {
+    background-color: var(--color-texto-oscuro);
+    color: var(--color-fondo-crema);
+    border-bottom: 2px solid rgba(51, 51, 59, 0.2);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 12px;
+}
+
+.cart-container-box .table-custom tbody td {
+    font-weight: 500;
+}
+    .cart-container-box .table-custom tbody tr:nth-child(even) td {
+    background-color: rgba(0, 0, 0, 0.04); /* Un tinte grisáceo ultra suave */
+}
+
+
+/* Inputs de cantidad */
+.cart-container-box .input-cantidad-directa {
+    color: var(--color-texto-oscuro);
+    border: 1px solid rgba(51, 51, 59, 0.2);
+    background-color: #ffffff;
+    border-radius: 6px;
+}
+
+/* ==========================================================================
+   BOTONES 
+   ========================================================================== */
+.btn-custom-artesanal {
+    background-color: var(--color-boton-azul);
+    color: #ffffff;
+    border: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0px 3px 8px rgba(75, 83, 130, 0.2);
+}
+
+.btn-custom-artesanal:hover, 
+.btn-custom-artesanal:focus {
+    background-color: var(--color-boton-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* Botones de control (+ / -) */
+.btn-outline-custom {
+    border: 1px solid var(--color-texto-oscuro);
+    color: var(--color-texto-oscuro);
+    background: transparent;
+    transition: all 0.2s;
+}
+.btn-outline-custom:hover {
+    background-color: var(--color-texto-oscuro);
+    color: var(--color-fondo-crema);
+}
+
+/* Basurero eliminar */
+.btn-eliminar-custom {
+    color: #c62828;
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+}
+.btn-eliminar-custom:hover {
+    transform: scale(1.15);
+}
+/* 2. Barra de navegación integrada, transparente y fija */
+body .navbar-transparente {
+    background-color: rgba(30, 33, 54, 0.4); /* Capa oscura translúcida base */
+    backdrop-filter: blur(8px); /* Efecto esmerilado premium al scrollear */
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background-color 0.3s ease;
+}
+
+.navbar .brand-artesanal {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    color: var(--color-dorado-detalle);
+    letter-spacing: 0.5px;
+    
+    font-size: 1.15rem; 
+    
+    padding-bottom: 2px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    
+    /* Una línea tipo 'costura o grabado' abajo del nombre, muy fina */
+    border-bottom: 1px dashed rgba(205, 164, 52, 0.4);
+    
+    transition: all 0.3s ease;
+}
+
+/* Efecto al tocar el logo en celulares o pasar el mouse en pc */
+.navbar .brand-artesanal:hover,
+.navbar .brand-artesanal:focus {
+    color: #ffffff;
+    border-bottom-color: #ffffff;
+    text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.4);
+}
+
+
+.navbar .btn-carrito-nav {
+    background-color: rgba(255, 255, 255, 0.15); 
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fdf8e6; 
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+/* Animación sutil al pasar el mouse o tocar en celular */
+.navbar .btn-carrito-nav:hover,
+.navbar .btn-carrito-nav:focus {
+    background-color: var(--color-dorado-detalle); /* Cambia a dorado */
+    color: var(--color-texto-oscuro); /* Letras gris oscuro */
+    border-color: var(--color-dorado-detalle);
+    transform: scale(1.05);
+}
+
+/* El globo indicador rojo del contador */
+.navbar .badge-contador-nav {
+    background-color: #d74c4c; /* Rojo vivo */
+    color: #ffffff;
+    top: -5px;
+    right: -5px;
+    font-size: 0.7rem;
+    padding: 4px 7px;
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Como la barra ahora es fija y flota arriba, 
+   empujamos el contenido principal un poco hacia abajo para que el menú no lo tape al cargar */
+body .hero-artesanal {
+    margin-top: 0;
+    padding-top: 60px; /* Compensación por la altura de la navbar */
+}
+
+
+
+/* ==========================================================================
+   ESCALABILIDAD: MEDIAS QUERIES PARA PANTALLAS GRANDES (A partir de tablets/PC)
+   ========================================================================== */
+@media (min-width: 768px) {
+    /* El logo crece y gana más presencia solo si hay espacio en pantalla */
+    .navbar .brand-artesanal {
+        font-size: 1.45rem;
+        letter-spacing: 2px;
+        border-bottom: 1px dashed rgba(205, 164, 52, 0.6);
+    }
+    
+    /* El título del banner (Hero) también escala de forma limpia aquí */
+    .hero-content h1 {
+        font-size: 3.2rem;
+    }
+}

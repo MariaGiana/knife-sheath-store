@@ -1,22 +1,21 @@
- 
-   @extends('layouts.app')
-   @section('content')
-            <div class="container mt-2 pt-2">
-                <div class="row align-items-center">
-                    <div class="col-lg-12 text-center">
-                        <div class="border-text">
-                            <div class="text_overlay"><h3>Nuestros Productos</h3></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+@extends('layouts.app')
+
+@section('content')
+<div class="hero-artesanal">
+    <div class="hero-content">
+        <h1>Vainas Artesanales</h1>
+        <p>Calidad, resistencia y terminaciones únicas</p>
+    </div>
+</div>
+
+<div class="container my-5">
             
             <div class="row">
                 @foreach($products as $product)
                     <div class="col-6 col-md-3 mt-4 text-center">
-                        <div class="card h-100 border-light shadow-sm"> 
+                        <div class="card h-100 border-0 shadow-sm product-card-artesanal"> 
                             
-                            <div class="p-3" style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                            <div class="p-3 product-img-container" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                                 @if($product->fotos && $product->fotos->foto1)
                                     <img src="{{ asset($product->fotos->foto1) }}" alt="{{ $product->name }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
                                 @else
@@ -24,15 +23,15 @@
                                 @endif
                             </div>
 
-                            <div class="card-body p-2">
-                                <h6 class="card-title text-dark fw-bold mb-1">{{ $product->name }}</h6>
-                                <p class="text-success m-0 fw-bold">
+                            <div class="card-body p-2 product-body-artesanal">
+                                <h6 class="card-title product-title-artesanal mb-1" style="font-size: 1rem;">{{ $product->name }}</h6>
+                                <p class="product-price-artesanal m-0" style="font-size: 1.15rem;">
                                     $ {{ number_format($product->precio, 0, '', '.') }}
                                 </p>
                             </div>
                             
                             <div class="card-footer bg-transparent border-0 p-2">
-                                <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#modal-{{ $product->id }}">
+                                <button type="button" class="btn btn-custom-artesanal btn-sm w-100" data-bs-toggle="modal" data-bs-target="#modal-{{ $product->id }}">
                                     Ver más
                                 </button>
                             </div>
@@ -41,9 +40,9 @@
 
                     <div class="modal fade" id="modal-{{ $product->id }}" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content text-start">
-                                <div class="modal-header">
-                                    <h5 class="modal-title fw-bold">{{ $product->name }}</h5>
+                            <div class="modal-content text-start" style="background-color: var(--color-fondo-crema); color: var(--color-texto-oscuro);">
+                                <div class="modal-header" style="border-bottom: 1px solid rgba(51,51,59,0.1);">
+                                    <h5 class="modal-title fw-bold" style="font-family: 'Playfair Display', serif;">{{ $product->name }}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -82,18 +81,18 @@
                                         @endif
                                     </div>
 
-                                    <h4 class="text-success fw-bold">$ {{ number_format($product->precio, 0, '', '.') }}</h4>
+                                    <h4 class="fw-bold" style="color: var(--color-texto-oscuro); font-family: 'Poppins', sans-serif;">$ {{ number_format($product->precio, 0, '', '.') }}</h4>
                                     
                                     <p class="mt-3 mb-1 fw-bold text-secondary">Descripción:</p>
                                     <p class="text-muted small">
                                         {{ $product->description_product ?? 'Este artesano no ha añadido una descripción todavía.' }}
                                     </p>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary btn-block mt-2" data-bs-dismiss="modal">Cerrar</button>
+                                <div class="modal-footer" style="border-top: 1px solid rgba(51,51,59,0.1);">
+                                    <button type="button" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Cerrar</button>
                                     <form action="{{ route('cart.add', $product->id) }}" method="POST" class="form-agregar-carrito">
                                         @csrf 
-                                        <button type="submit" class="btn btn-primary btn-block mt-2">
+                                        <button type="submit" class="btn btn-custom-artesanal mt-2">
                                             <i class="bi bi-cart-plus"></i> Agregar al Carrito
                                         </button>
                                     </form>
@@ -101,13 +100,10 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                @endforeach
             </div>
+</div>
 
-        </div>
-    </div>
-
-   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/carrito-ajax.js') }}"></script>
-    @endsection
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('assets/js/carrito-ajax.js') }}"></script>
+@endsection

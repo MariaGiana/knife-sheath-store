@@ -15,9 +15,10 @@ Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 
 //RUTAS DEL CARRITO
-//rutas para aumentar, disminuir y eliminar la cantidad de un producto 
+//rutas para aumentar, disminuir, agregar y eliminar la cantidad de un producto 
 Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
 Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
+Route::post('/cart/update-quantity/{id}', [CartController::class, 'updateQuantity'])->name('cart.update-quantity');
 Route::post('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart.delete');
 
 // El panel de administración (Donde tú o tu mamá van a loguearse para subir fotos)
