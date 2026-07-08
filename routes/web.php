@@ -21,6 +21,9 @@ Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('c
 Route::post('/cart/update-quantity/{id}', [CartController::class, 'updateQuantity'])->name('cart.update-quantity');
 Route::post('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart.delete');
 
+// Borrar todo el carrito de una sola vez (vaciar carrito)
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+
 // El panel de administración (Donde tú o tu mamá van a loguearse para subir fotos)
 Route::get('/admin/dashboard', function () {
     return "Aquí irá el panel de administración más adelante";

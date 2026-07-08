@@ -133,6 +133,23 @@ class CartController extends Controller
             return redirect()->route('cart.show')->with('success', 'Producto eliminado del carrito.');
         }
 
+        public function clear()
+{
+    try {
+        // Obtenemos el token del usuario actual
+        $tokenCliente = session()->getId();
+
+        // Borramos TODOS los registros de la tabla de órdenes temporales
+        // que pertenezcan a este usuario/token
+        TemporaryOrder::where('token', $tokenCliente)->delete();
+
+        return response()->json(['status' => 'success']);
+    } catch (\Exception $e) {
+        // Esto es lo que causaba el error 500, si falla, vemos por qué
+        return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+    }
+}
+
 
         private function jsonCartResponse($request, $tokenCliente, $cartItem)
         {

@@ -1,15 +1,32 @@
+/**
+ * public/assets/js/carrito-ajax.js
+ * Sistema unificado para el manejo del carrito de compras vía AJAX.
+ * Totalmente blindado con delegación de eventos.
+ */
 document.addEventListener('DOMContentLoaded', function () {
     
-   // 1. CONTROLAR BOTÓN "AGREGAR AL CARRITO" (OPCIÓN CON ANIMACIÓN EN EL BOTÓN)
-    const formsAgregar = document.querySelectorAll('.form-agregar-carrito');
-    formsAgregar.forEach(form => {
-        form.addEventListener('submit', function (e) {
+    // ==========================================================================
+    // 1. CAPTURA GLOBAL DE SUBMITS (Evita recargos y duplicaciones de clicks)
+    // ==========================================================================
+    document.addEventListener('submit', function (e) {
+        
+        // --- CASO A: BOTÓN "AGREGAR AL CARRITO" (Desde Tienda o Modales) ---
+        const formAgregar = e.target.closest('.form-agregar-carrito');
+        if (formAgregar) {
             e.preventDefault(); 
-            const url = this.action;
-            const formData = new FormData(this);
-            
-            // Encontrás el botón que disparó la acción
-            const boton = this.querySelector('button[type="submit"]');
+            e.stopImmediatePropagation();
+
+            const boton = formAgregar.querySelector('button[type="submit"]');
+            if (!boton) return;
+
+            // Escudo anti doble click rápido
+            if (boton.disabled || boton.classList.contains('procesando')) return;
+
+            boton.disabled = true;
+            boton.classList.add('procesando');
+
+            const url = formAgregar.action;
+            const formData = new FormData(formAgregar);
             const textoOriginal = boton.innerHTML;
 
             fetch(url, {
@@ -23,33 +40,40 @@ document.addEventListener('DOMContentLoaded', function () {
                     const contadorHeader = document.getElementById('checkout_items');
                     if (contadorHeader) contadorHeader.textContent = data.cartCount;
                     
-                    // EFECTO VISUAL ELEGANTE: Cambia el botón a verde y dice Agregado
-                    boton.classList.remove('btn-primary');
+                    // Efecto visual premium
+                    boton.classList.remove('btn-custom-artesanal', 'btn-primary');
                     boton.classList.add('btn-success');
                     boton.innerHTML = '<i class="bi bi-check-circle"></i> ¡Agregado!';
-                    boton.disabled = true;
 
-                    // A los 2 segundos vuelve a su estado normal
                     setTimeout(() => {
-                        boton.classList.remove('btn-success');
-                        boton.classList.add('btn-primary');
+                        boton.classList.remove('btn-success', 'procesando');
+                        boton.classList.add('btn-custom-artesanal');
                         boton.innerHTML = textoOriginal;
                         boton.disabled = false;
                     }, 2000);
+                } else {
+                    boton.disabled = false;
+                    boton.classList.remove('procesando');
                 }
             })
-            .catch(error => console.error('Error al agregar:', error));
-        });
-    });
+            .catch(error => {
+                console.error('Error al agregar:', error);
+                boton.innerHTML = textoOriginal;
+                boton.classList.remove('procesando');
+                boton.disabled = false;
+            });
+            return; // Cortamos la ejecución aquí si entró en este caso
+        }
 
-    // 2. CONTROLAR CLICS EN BOTONES MÁS (+) Y MENOS (-)
-    const formsBotones = document.querySelectorAll('.form-cantidad-btn');
-    formsBotones.forEach(form => {
-        form.addEventListener('submit', function (e) {
+        // --- CASO B: BOTONES MÁS (+) Y MENOS (-) EN EL CARRITO ---
+        const formCantidadBtn = e.target.closest('.form-cantidad-btn');
+        if (formCantidadBtn) {
             e.preventDefault();
-            const url = this.action;
-            const formData = new FormData(this);
-            const fila = this.closest('tr');
+            e.stopImmediatePropagation();
+
+            const url = formCantidadBtn.action;
+            const formData = new FormData(formCantidadBtn);
+            const fila = formCantidadBtn.closest('tr');
 
             fetch(url, {
                 method: 'POST',
@@ -63,13 +87,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (contadorHeader) contadorHeader.textContent = data.cartCount;
 
                     if (data.removed) {
-                        fila.remove();
+                        if (fila) fila.remove();
                     } else {
-                        // ACTUALIZACIÓN CLAVE: Buscamos el input y cambiamos su valor dinámicamente
-                        const inputNum = fila.querySelector('.input-cantidad-directa');
+                        // Buscamos el input en la fila y actualizamos su valor
+                        const inputNum = fila ? fila.querySelector('.input-cantidad-directa') : null;
                         if (inputNum) inputNum.value = data.cantidad;
 
-                        const tdSubtotal = fila.querySelector('.td-subtotal');
+                        const tdSubtotal = fila ? fila.querySelector('.td-subtotal') : null;
                         if (tdSubtotal) tdSubtotal.textContent = data.subtotal;
                     }
 
@@ -77,48 +101,57 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (totalGeneralContenedor) totalGeneralContenedor.textContent = data.totalGeneral;
                 }
             })
-            .catch(error => console.error('Error en botón:', error));
-        });
-    });
+            .catch(error => console.error('Error en botón cantidad:', error));
+            return;
+        }
 
-    // 3. CONTROLAR CUANDO SE ESCRIBE UN NÚMERO DIRECTO Y SE DA ENTER O SE HACE CLIC AFUERA
-    const inputsCantidad = document.querySelectorAll('.input-cantidad-directa');
-    inputsCantidad.forEach(input => {
-        input.addEventListener('change', function () {
-            const form = this.closest('form');
-            const url = form.action;
-            const formData = new FormData(form);
-            const fila = this.closest('tr');
-
-            if (parseInt(this.value) < 1 || this.value === '') {
-                this.value = 1;
-                formData.set('cantidad', 1);
-            }
-
-            fetch(url, {
-                method: 'POST',
-                body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    const contadorHeader = document.getElementById('checkout_items');
-                    if (contadorHeader) contadorHeader.textContent = data.cartCount;
-
-                    const tdSubtotal = fila.querySelector('.td-subtotal');
-                    if (tdSubtotal) tdSubtotal.textContent = data.subtotal;
-
-                    const totalGeneralContenedor = document.getElementById('total-general-carrito');
-                    if (totalGeneralContenedor) totalGeneralContenedor.textContent = data.totalGeneral;
-                }
-            })
-            .catch(error => console.error('Error en input directo:', error));
-        });
-
-        // Evita que el Enter haga un submit clásico que recargue la página
-        input.closest('form').addEventListener('submit', function(e) {
+        // --- CASO C: EVITAR QUE EL ENTER DIRECTO RECARGUE LA PÁGINA EN EL INPUT ---
+        const inputDirecto = e.target.querySelector('.input-cantidad-directa');
+        if (inputDirecto) {
             e.preventDefault();
-        });
+        }
     });
-});
+
+    // ==========================================================================
+    // 2. CAPTURA GLOBAL DE CAMBIOS DIRECTOS EN EL INPUT (Escribir número y salir)
+    // ==========================================================================
+    document.addEventListener('change', function (e) {
+        // Verificamos si el elemento que cambió es tu input de cantidad directa
+        if (!e.target.classList.contains('input-cantidad-directa')) return;
+
+        const input = e.target;
+        const form = input.closest('form');
+        if (!form) return;
+
+        const url = form.action;
+        const formData = new FormData(form);
+        const fila = input.closest('tr');
+
+        // Si ponen un número menor a 1 o lo dejan vacío, lo forzamos a 1
+        if (parseInt(input.value) < 1 || input.value === '') {
+            input.value = 1;
+            formData.set('cantidad', 1);
+        }
+
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const contadorHeader = document.getElementById('checkout_items');
+                if (contadorHeader) contadorHeader.textContent = data.cartCount;
+
+                const tdSubtotal = fila ? fila.querySelector('.td-subtotal') : null;
+                if (tdSubtotal) tdSubtotal.textContent = data.subtotal;
+
+                const totalGeneralContenedor = document.getElementById('total-general-carrito');
+                if (totalGeneralContenedor) totalGeneralContenedor.textContent = data.totalGeneral;
+            }
+        })
+        .catch(error => console.error('Error en cambio de input directo:', error));
+    });
+
+}); 
