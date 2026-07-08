@@ -100,6 +100,10 @@
 <div class="collapse" id="seccionFormularioEnvio">
     @include('partials.formulario-envio')
 </div>
+
+    <div id="html-mensaje-exito" style="display:none;">
+        @include('partials.mensaje-exito')
+    </div>
             <div class="row align-items-center justify-content-between mt-4">
                 <div class="col-md-6 mt-2">
                     <a href="{{ url('/') }}" class="btn btn-custom-artesanal">
@@ -112,6 +116,7 @@
                     </h3>
                 </div>
             </div>
+   
         @endif
 
     </div>
