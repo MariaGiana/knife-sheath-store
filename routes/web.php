@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 // La página de inicio (Donde se muestran todas las vainas)
@@ -24,8 +26,14 @@ Route::post('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart
 // Borrar todo el carrito de una sola vez (vaciar carrito)
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
-// El panel de administración (Donde tú o tu mamá van a loguearse para subir fotos)
-Route::get('/admin/dashboard', function () {
-    return "Aquí irá el panel de administración más adelante";
+//PANEL DE ADMINISTRACIÓN
+// Rutas públicas (no necesitan login)
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate']);
+
+// Rutas protegidas (solo para admin)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index']);
+    Route::post('/admin/productos/store', [AdminController::class, 'store']);
 });
 
