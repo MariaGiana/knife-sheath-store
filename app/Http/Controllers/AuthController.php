@@ -12,27 +12,25 @@ class AuthController extends Controller
         return view('auth.login'); 
     }
 
-    public function authenticate(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+   public function authenticate(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
-        // Intentamos loguear al usuario
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            // Esto redirige al admin al dashboard
-            return redirect()->intended('/admin/dashboard');
-        }
-
-        // Si falla, volvemos atrás con un error
-        return back()->withErrors(['email' => 'Las credenciales no coinciden.']);
+    // Usamos 'admin' como guard para validar contra la tabla admins
+    if (Auth::guard('admin')->attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->intended('/admin/dashboard');
     }
+
+    return back()->withErrors(['email' => 'Las credenciales no coinciden.']);
+}
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');

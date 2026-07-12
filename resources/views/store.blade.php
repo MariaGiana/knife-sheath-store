@@ -17,7 +17,7 @@
                     
                     <div class="p-3 product-img-container" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                         @if($product->fotos && $product->fotos->foto1)
-                            <img src="{{ asset($product->fotos->foto1) }}" alt="{{ $product->name }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                            <img src="{{ asset('storage/' . $product->fotos->foto1) }}" alt="{{ $product->name }}" style="max-height: 100%; max-width: 100%; object-fit: contain;">
                         @else
                             <span class="text-muted small">Sin imagen</span>
                         @endif

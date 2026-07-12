@@ -13,17 +13,17 @@
                         @if($product->fotos)
                             @if($product->fotos->foto1)
                                 <div class="carousel-item active h-100">
-                                    <img src="{{ asset($product->fotos->foto1) }}" class="d-inline-block h-100" style="object-fit: contain;" alt="Foto 1">
+                                    <img src="{{ asset('storage/' .$product->fotos->foto1) }}" class="d-inline-block h-100" style="object-fit: contain;" alt="Foto 1">
                                 </div>
                             @endif
                             @if($product->fotos->foto2)
                                 <div class="carousel-item h-100">
-                                    <img src="{{ asset($product->fotos->foto2) }}" class="d-inline-block h-100" style="object-fit: contain;" alt="Foto 2">
+                                    <img src="{{ asset('storage/' .$product->fotos->foto2) }}" class="d-inline-block h-100" style="object-fit: contain;" alt="Foto 2">
                                 </div>
                             @endif
                             @if($product->fotos->foto3)
                                 <div class="carousel-item h-100">
-                                    <img src="{{ asset($product->fotos->foto3) }}" class="d-inline-block h-100" style="object-fit: contain;" alt="Foto 3">
+                                    <img src="{{ asset('storage/' .$product->fotos->foto3) }}" class="d-inline-block h-100" style="object-fit: contain;" alt="Foto 3">
                                 </div>
                             @endif
                         @else

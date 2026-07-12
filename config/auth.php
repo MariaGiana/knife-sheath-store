@@ -37,12 +37,17 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+   'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'admins', // Este nombre debe coincidir con el provider de arriba
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------
@@ -61,17 +66,13 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+'providers' => [
+    
+    'admins' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Admin::class,
     ],
+],
 
     /*
     |--------------------------------------------------------------------------

@@ -14,7 +14,7 @@ class Product extends Model
 
     public function fotos()
     {
-        return $this->hasOne(FotoProduct::class, 'product_id', 'id');
+        return $this->hasOne(FotoProduct::class, 'product_id');
     }
 }
 class FotoProduct extends Model
@@ -24,5 +24,10 @@ class FotoProduct extends Model
     protected $primaryKey = 'id';
 
     public $timestamps = false;
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id'); 
+    }
 }
 

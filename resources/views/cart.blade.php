@@ -39,7 +39,7 @@
                             <td class="align-middle text-start font-weight-bold">{{ $item->product->name }}</td>
                             <td class="align-middle">
                                 @if($item->product->fotos && $item->product->fotos->foto1)
-                                    <img src="{{ asset($item->product->fotos->foto1) }}" alt="{{ $item->product->name }}" width="50" class="rounded shadow-sm" style="object-fit: contain;">
+                                    <img src="{{ asset('storage/' . $item->product->fotos->foto1) }}" alt="{{ $item->product->name }}" width="50" class="rounded shadow-sm" style="object-fit: contain;">
                                 @else
                                     <span class="text-muted small">Sin imagen</span>
                                 @endif

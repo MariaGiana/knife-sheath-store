@@ -30,9 +30,13 @@ Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear')
 // Rutas públicas (no necesitan login)
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
+// Ruta del Dashboard (donde va después de loguearse)
+Route::get('/admin/dashboard', function () {
+    return "Bienvenido al panel administrativo";
+})->middleware('auth:admin'); // Esto es lo que protege la ruta
 
 // Rutas protegidas (solo para admin)
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index']);
     Route::post('/admin/productos/store', [AdminController::class, 'store']);
 });
