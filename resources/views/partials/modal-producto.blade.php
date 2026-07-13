@@ -1,4 +1,4 @@
-<!-- resources/views/partials/modal-producto.blade.php -->
+
 <div class="modal fade" id="modal-{{ $product->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-start" style="background-color: var(--color-fondo-crema); color: var(--color-texto-oscuro);">

@@ -16,6 +16,7 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Precio</th>
+                        <th>Descripción</th>
                         <th>Imagen</th>
                         <th>Acciones</th>
                     </tr>
@@ -25,6 +26,9 @@
                     <tr>
                         <td>{{ $product->name }}</td>
                         <td>${{ $product->precio }}</td>
+                        <td style="max-width: 250px; word-wrap: break-word;">
+                        {{ $product->description_product }}
+                        </td>
                      <td>
     @if($product->fotos)
         <div class="d-flex gap-1">
@@ -45,6 +49,10 @@
                     @endforeach
                 </tbody>
             </table>
+
+             <a href="{{ url('/') }}" class="btn btn-custom-artesanal">
+                    <i class="bi bi-arrow-left-circle"></i> Volver a la Tienda
+                </a>
         </div>
     </div>
 </div>

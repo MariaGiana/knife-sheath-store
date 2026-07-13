@@ -22,7 +22,12 @@
                     <input type="password" name="password" class="form-control" 
                            style="border: 1px solid rgba(51,51,59,0.2);">
                 </div>
-                
+            @if ($errors->any())
+                <div id="error-alert" class="alert alert-danger" style="color: red; padding: 10px;">
+                    Las credenciales son incorrectas.
+                </div>
+            @endif
+
                 <button type="submit" class="btn btn-custom-artesanal w-100 fw-bold">
                     Ingresar
                 </button>
@@ -30,4 +35,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    
+    setTimeout(function() {
+        var errorAlert = document.getElementById('error-alert');
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
+        }
+    }, 5000); 
+</script>
 @endsection
