@@ -12,6 +12,9 @@ class Product extends Model
 
     public $timestamps = false;
 
+    protected $fillable = ['name', 'precio', 'description_product'];
+    
+
     public function fotos()
     {
         return $this->hasOne(FotoProduct::class, 'product_id');

@@ -26,18 +26,23 @@ Route::post('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart
 // Borrar todo el carrito de una sola vez (vaciar carrito)
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
-//PANEL DE ADMINISTRACIÓN
-// Rutas públicas (no necesitan login)
+
+// PANEL DE ADMINISTRACIÓN
+// Rutas públicas
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
-// Ruta del Dashboard (donde va después de loguearse)
-Route::get('/admin/dashboard', function () {
-    return "Bienvenido al panel administrativo";
-})->middleware('auth:admin'); // Esto es lo que protege la ruta
 
 // Rutas protegidas (solo para admin)
 Route::middleware(['auth:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index']);
-    Route::post('/admin/productos/store', [AdminController::class, 'store']);
+    
+// Dashboard principal
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');    
+//   // rutas de agregar, edición y eliminación de un producto
+    Route::get('/admin/productos/create', [AdminController::class, 'create'])->name('admin.productos.create');    
+    Route::post('/admin/productos/store', [AdminController::class, 'store'])->name('admin.productos.store');
+    
+    Route::get('/admin/productos/edit/{id}', [AdminController::class, 'edit'])->name('admin.productos.edit');
+    Route::put('/admin/productos/update/{id}', [AdminController::class, 'update'])->name('admin.productos.update');
+    Route::delete('/admin/productos/destroy/{id}', [AdminController::class, 'destroy'])->name('admin.productos.destroy');
 });
 

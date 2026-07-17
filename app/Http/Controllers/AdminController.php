@@ -8,35 +8,96 @@ use App\Models\Product;
 
 class AdminController extends Controller
 {
-  public function index() 
-{
-    // Obtenemos todos los productos
-    $products = \App\Models\Product::all(); 
-    return view('admin.dashboard', compact('products')); 
-}
 
-    public function store(Request $request)
+public function index() 
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        // Obtenemos todos los productos
+        $products = Product::all();
+        return view('admin.dashboard', compact('products')); 
+    }
 
-        $product = new \App\Models\Product();
-        $product->name = $request->input('name');
-        $product->description = $request->input('description');
-        $product->price = $request->input('price');
+public function store(Request $request)
+        {
+            // 1. Validar los datos
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'precio' => 'required|numeric',
+                'description_product' => 'required|string',
+            ]);
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('public/images');
-            $product->fotos()->create(['image_path' => $imagePath]);
+            // 2. Crear el producto
+            $product = Product::create([
+                'name' => $request->name,
+                'precio' => $request->precio,
+                'description_product' => $request->description_product,
+            ]);
+
+            // 3. Gestionar las fotos (si se subieron)
+            $fotosData = [];
+            foreach (['foto1', 'foto2', 'foto3'] as $columna) {
+                if ($request->hasFile($columna)) {
+                    $path = $request->file($columna)->store('products', 'public');
+                    $fotosData[$columna] = $path;
+                }
+            }
+
+            // 4. Crear el registro de fotos vinculado al producto nuevo
+            $product->fotos()->create($fotosData);
+
+            return redirect()->route('admin.dashboard')->with('success', 'Producto creado con éxito');
+        }
+public function create()
+    {
+        return view('admin.create');
+    }
+
+public function edit($id)
+    {
+       $product = Product::with('fotos')->findOrFail($id);   
+        return view('admin.edit', compact('product'));
+    }    
+
+public function update(Request $request, $id)
+    {
+        $product = Product::with('fotos')->findOrFail($id);
+        
+        // 1. Actualizar datos básicos (name, price, etc)
+        $product->update($request->only(['name', 'precio', 'description_product']));
+
+        // 2. Gestionar las fotos
+        if (!$product->fotos) {
+            $product->fotos()->create([]); // Crea el registro si no existe
         }
 
-        $product->save();
+        $fotosData = [];
+        foreach (['foto1', 'foto2', 'foto3'] as $columna) {
+            if ($request->hasFile($columna)) {
+                $path = $request->file($columna)->store('products', 'public');
+                $fotosData[$columna] = $path;
+            }
+        }
 
-        return redirect()->back()->with('success', 'Producto agregado exitosamente.');
+        if (!empty($fotosData)) {
+            $product->fotos()->update($fotosData);
+        }
+
+        return redirect()->route('admin.dashboard')->with('success', 'Producto actualizado con éxito');
     }
-};
+
+
+public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+
+        // --- MODO SIMULACIÓN ---
+        //dd("Simulación: Se borraría el producto con ID: " . $product->id . " y nombre: " . $product->name);
+        // -----------------------
+
+        // borrar de verdad
+        $product->delete();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Producto borrado con éxito');
+    }
+
+}
 
