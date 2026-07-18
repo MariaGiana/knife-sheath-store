@@ -7,53 +7,55 @@
              style="background-color: var(--color-fondo-crema); border-radius: 20px; max-width: 500px; width: 100%;">
             
             <h3 class="fw-bold mb-4 text-center" style="font-family: 'Playfair Display', serif; color: var(--color-texto-oscuro);">
-                Nuevo Producto
+                Editar: {{ $product->name }}
             </h3>
 
-            {{-- Formulario de creación --}}
-            <form action="{{ route('admin.productos.store') }}" method="POST" enctype="multipart/form-data">
+            {{-- IMPORTANTE: Aquí la ruta lleva el ID y usamos el método PUT --}}
+            <form action="{{ route('admin.productos.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT') 
 
-                {{-- Carga de Imágenes --}}
+                {{-- Carga de Imágenes (Igual que antes) --}}
                 <div class="mb-4">
-                    <label class="form-label small fw-bold">Imágenes del Producto</label>
-                    <div class="mt-2 text-start">
-                        <input type="file" name="foto1" class="form-control mb-2" style="border: 1px solid rgba(51,51,59,0.2);">
-                        <input type="file" name="foto2" class="form-control mb-2" style="border: 1px solid rgba(51,51,59,0.2);">
-                        <input type="file" name="foto3" class="form-control" style="border: 1px solid rgba(51,51,59,0.2);">
+                    <label class="form-label small fw-bold">Imágenes actuales</label>
+                    <div class="d-flex gap-2 mb-2">
+                        @foreach(['foto1', 'foto2', 'foto3'] as $f)
+                            @if($product->fotos?->$f)
+                                <img src="{{ asset('storage/' . $product->fotos->$f) }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                            @endif
+                        @endforeach
                     </div>
+                    <label class="form-label small fw-bold">Actualizar imágenes</label>
+                    <input type="file" name="foto1" class="form-control mb-2">
+                    <input type="file" name="foto2" class="form-control mb-2">
+                    <input type="file" name="foto3" class="form-control">
                 </div>
 
-                {{-- Campo Nombre --}}
+                {{-- Campo Nombre con valor precargado --}}
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Nombre del Producto</label>
                     <input type="text" name="name" class="form-control" 
-                           style="border: 1px solid rgba(51,51,59,0.2);" 
-                           value="{{ old('name') }}" required>
+                           value="{{ old('name', $product->name) }}" required>
                 </div>
 
-                {{-- Campo Precio --}}
+                {{-- Campo Precio con valor precargado --}}
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Precio</label>
                     <input type="number" name="precio" class="form-control" 
-                           style="border: 1px solid rgba(51,51,59,0.2);" 
-                           value="{{ old('precio') }}" step="0.01" required>
+                           value="{{ old('precio', $product->precio) }}" step="0.01" required>
                 </div>
 
-                {{-- Campo Descripción --}}
+                {{-- Campo Descripción con valor precargado --}}
                 <div class="mb-4">
                     <label class="form-label small fw-bold">Descripción</label>
-                    <textarea name="description_product" class="form-control" 
-                              style="border: 1px solid rgba(51,51,59,0.2);" 
-                              rows="4" required>{{ old('description_product') }}</textarea>
+                    <textarea name="description_product" class="form-control" rows="4" required>{{ old('description_product', $product->description_product) }}</textarea>
                 </div>
 
-                {{-- Botones --}}
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-custom-artesanal fw-bold">
-                        Guardar Producto
+                        Actualizar Producto
                     </button>
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary fw-bold" style="border-radius: 8px;">
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary fw-bold">
                         Cancelar
                     </a>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\FotoProduct;
 
 
 class AdminController extends Controller
@@ -41,7 +42,6 @@ public function store(Request $request)
                 }
             }
 
-            // 4. Crear el registro de fotos vinculado al producto nuevo
             $product->fotos()->create($fotosData);
 
             return redirect()->route('admin.dashboard')->with('success', 'Producto creado con éxito');

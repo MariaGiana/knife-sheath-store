@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\FotoProduct;
 
 class Product extends Model
 {
@@ -19,18 +20,6 @@ class Product extends Model
     {
         return $this->hasOne(FotoProduct::class, 'product_id');
     }
-}
-class FotoProduct extends Model
-{
-    protected $table = 'product_images'; 
 
-    protected $primaryKey = 'id';
-
-    public $timestamps = false;
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id'); 
-    }
 }
 

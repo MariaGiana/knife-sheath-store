@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Models\TemporaryOrder;
+use App\Models\FotoProduct;
 
 class ProductController extends Controller
 {
