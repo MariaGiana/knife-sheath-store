@@ -6,8 +6,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-// La página de inicio (Donde se muestran todas las vainas)
-Route::get('/', [ProductController::class, 'index'])->name('home');
+// La página de inicio
+// Ruta que muestra el HTML (la que escribe el usuario en el navegador)
+Route::get('/', [ProductController::class, 'index'])->name('store.index');
+
+// Ruta exclusiva para el JSON (la que llama Alpine)
+Route::get('/api/productos', [ProductController::class, 'getProductsJson']);
 
 // El detalle de una vaina específica (Cuando hacen clic en una para verla más grande)
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.detail');
