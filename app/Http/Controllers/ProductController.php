@@ -11,8 +11,12 @@ class ProductController extends Controller
 {
 
 public function index() {
-    // Solo carga la vista, no necesita enviar productos aún
-    return view('store'); 
+    // Calcula el total de productos de la sesión actual
+    $tokenCliente = session()->getId();
+    $cartCount = \App\Models\TemporaryOrder::where('token', $tokenCliente)->sum('cantidad');
+
+    // Pásaselo a la vista
+    return view('store', compact('cartCount')); 
 }
 
 public function getProductsJson() {

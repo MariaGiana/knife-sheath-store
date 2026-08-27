@@ -31,7 +31,7 @@ Route::post('/cart/delete/{id}', [CartController::class, 'destroy'])->name('cart
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 
-// PANEL DE ADMINISTRACIÓN
+// PANEL DE ADMINISTRACIÓN (password: Admin1234, mail: admin@example.com)
 // Rutas públicas
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
