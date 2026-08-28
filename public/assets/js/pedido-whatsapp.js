@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const notas = document.getElementById('cliente-notes') || document.getElementById('cliente-notas');
             const notasTexto = notas ? notas.value.trim() : "";
 
+            if (!validarFormularioPedido(nombre, telefono, direccion)) {
+            return; 
+        }
             // 3. Recorremos las filas de la tabla para armar el remito dinámicamente
             // Buscamos las filas de datos comunes en una tabla
             const filasProductos = document.querySelectorAll('table tbody tr');
@@ -76,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // ==========================================================================
             
             // A. Avisamos de forma silenciosa a Laravel que borre el carrito de la sesión
-            // (Asumiendo que tu ruta de vaciar carrito se llama 'cart.clear' o similar)
            fetch(URL_VACIAR_CARRITO, { 
             method: 'POST',
             headers: {
@@ -99,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 seccionForm.classList.remove('show');
             }
 
-            // Reemplazamos la tabla por un mensaje elegante con tarjeta de fondo
+            // Reemplazamos la tabla por un mensaje 
 const contenedorCarrito = document.querySelector('.container.my-5') || document.querySelector('main');
 const mensajeExito = document.getElementById('html-mensaje-exito').innerHTML;
 if (contenedorCarrito) {
@@ -114,4 +116,36 @@ if (contenedorCarrito) {
 }
         });
     }
+
+
+    /**
+ * Valida los campos del formulario de pedido de forma aislada.
+ * Retorna true si pasa todas las pruebas, o false si hay un error.
+ */
+function validarFormularioPedido(nombre, telefono, direccion) {
+    // Validar Nombre: solo letras y espacios (mínimo 2, máximo 50 caracteres)
+    const regexNombre = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,50}$/;
+    if (!regexNombre.test(nombre)) {
+        alert("Por favor, ingresa un nombre y apellido válido (solo letras).");
+        document.getElementById('cliente-nombre').focus();
+        return false;
+    }
+
+    // Validar Teléfono: limpiar caracteres no numéricos y verificar longitud
+    const telefonoLimpio = telefono.replace(/\D/g, '');
+    if (telefonoLimpio.length < 8 || telefonoLimpio.length > 15) {
+        alert("Por favor, ingresa un número de teléfono de contacto válido (entre 8 y 15 dígitos).");
+        document.getElementById('cliente-telefono').focus();
+        return false;
+    }
+
+    // Validar Dirección: que no esté vacía y tenga un mínimo lógico
+    if (direccion.length < 5) {
+        alert("Por favor, ingresa una dirección de envío válida.");
+        document.getElementById('cliente-direccion').focus();
+        return false;
+    }
+
+    return true; // Todo OK
+}
 });

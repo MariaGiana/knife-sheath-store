@@ -7,12 +7,13 @@
         </div>
         
         <h2 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: var(--color-texto-oscuro);">
-            ¡Pedido Enviado!
+            ¡Pedido Generado!
         </h2>
         
         <p class="text-muted small px-2">
-            Tu remito ya fue generado y enviado al taller por WhatsApp.<br>
-            Nos pondremos en contacto en breve para coordinar el pago y el envío.
+            Tu remito ya fue generado, debes enviarlo al taller por WhatsApp.<br>
+            Una vez recibamos tu pedido, nos pondremos en contacto para coordinar el pago y el envío.<br>
+            Muchas gracias por elegirnos!
         </p>
         
         <div class="mt-4">

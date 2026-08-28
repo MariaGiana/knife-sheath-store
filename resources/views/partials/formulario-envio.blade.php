@@ -7,17 +7,17 @@
             <div class="row">
                 <div class="col-12 col-md-6 mb-3">
                     <label for="cliente-nombre" class="form-label small fw-bold mb-1">Nombre y Apellido:</label>
-                    <input type="text" id="cliente-nombre" class="form-control" style="background-color: #ffffff; border: 1px solid rgba(51,51,59,0.2);" placeholder="Ej: Juan Pérez" required>
+                    <input type="text" id="cliente-nombre" class="form-control" style="background-color: #ffffff; border: 1px solid rgba(51,51,59,0.2);" placeholder="Ej: Juan Pérez">
                 </div>
                 
                 <div class="col-12 col-md-6 mb-3">
                     <label for="cliente-telefono" class="form-label small fw-bold mb-1">Teléfono de Contacto:</label>
-                    <input type="tel" id="cliente-telefono" class="form-control" style="background-color: #ffffff; border: 1px solid rgba(51,51,59,0.2);" placeholder="Ej: 1123456789" required>
+                    <input type="tel" id="cliente-telefono" class="form-control" style="background-color: #ffffff; border: 1px solid rgba(51,51,59,0.2);" placeholder="Ej: 1123456789">
                 </div>
                 
                 <div class="col-12 mb-3">
                     <label for="cliente-direccion" class="form-label small fw-bold mb-1">Dirección Completa (Calle, Número, Localidad):</label>
-                    <input type="text" id="cliente-direccion" class="form-control" style="background-color: #ffffff; border: 1px solid rgba(51,51,59,0.2);" placeholder="Ej: Av. Siempreviva 742, CABA" required>
+                    <input type="text" id="cliente-direccion" class="form-control" style="background-color: #ffffff; border: 1px solid rgba(51,51,59,0.2);" placeholder="Ej: Av. Siempreviva 742, CABA">
                 </div>
 
                 <div class="col-12 mb-4">

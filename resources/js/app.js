@@ -4,30 +4,6 @@ import { Modal } from 'bootstrap';
 // Hacemos que bootstrap sea accesible globalmente para Alpine
 window.bootstrap = { Modal };
 
-document.addEventListener('click', function(event) {
-    const button = event.target.closest('.btn-abrir-modal');
-    if (!button) return;
-
-    const urlAccion = button.getAttribute('data-url');
-    const nombre = button.getAttribute('data-nombre');
-
-    const form = document.getElementById('form-delete-cart');
-    if (form) {
-        form.action = urlAccion;
-    }
-
-    const texto = document.getElementById('delete-modal-carrito');
-    if (texto) {
-        texto.innerHTML = `¿Estás seguro de que deseas quitar <strong>${nombre}</strong> del carrito?`;
-    }
-
-    const modalElement = document.getElementById('deleteCartModal');
-    if (modalElement) {
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-    }
-});
-
 document.addEventListener('alpine:init', () => {
     Alpine.data('tienda', () => ({
         productos: [],
