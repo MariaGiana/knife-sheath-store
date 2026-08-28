@@ -58,7 +58,8 @@
    ```bash
    git clone [https://github.com/your-username/knife-sheath-store.git](https://github.com/your-username/knife-sheath-store.git)
    cd knife-sheath-store
-
+   ```
+ 
    Install PHP dependencies / Instalar dependencias de PHP:
 
  ```bash
