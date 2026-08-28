@@ -90,13 +90,13 @@ public function destroy($id)
         $product = Product::findOrFail($id);
 
         // --- MODO SIMULACIÓN ---
-        //dd("Simulación: Se borraría el producto con ID: " . $product->id . " y nombre: " . $product->name);
+        dd("Simulación: Se borraría el producto con ID: " . $product->id . " y nombre: " . $product->name);
         // -----------------------
 
-        // borrar de verdad
-        $product->delete();
+        // BORRAR DE VERDAD (descomentar las siguientes líneas para habilitar el borrado real)
+        //$product->delete();
 
-        return redirect()->route('admin.dashboard')->with('success', 'Producto borrado con éxito');
+        //return redirect()->route('admin.dashboard')->with('success', 'Producto borrado con éxito');
     }
 
 }

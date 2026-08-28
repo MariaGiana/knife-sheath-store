@@ -79,12 +79,15 @@
 
                             <td class="align-middle td-subtotal font-weight-bold">${{ number_format($item->product->precio * $item->cantidad, 0, '', '.') }}</td>
                             <td class="align-middle">
-                                <form action="{{ route('cart.delete', $item->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres quitar este producto del carrito?');">
-                                    @csrf
-                                    <button type="submit" class="btn-eliminar-custom">
-                                        <i class="bi bi-trash3-fill"></i>
-                                    </button>
-                                </form>
+                                <!--DELETE -->
+                            <form action="{{ route('cart.delete', $item->id) }}" method="POST">
+                                @csrf
+                                <button type="button" class="btn-eliminar-custom btn-abrir-modal" 
+        data-url="{{ route('cart.delete', $item->id) }}" 
+       data-nombre="{{ $item->product->name }}">
+    <i class="bi bi-trash3-fill"></i>
+</button>
+                            </form>
                             </td>
                         </tr>
                     @endforeach
@@ -116,10 +119,11 @@
                     </h3>
                 </div>
             </div>
-   
+   @include('partials.delete-carrito')
         @endif
 
     </div>
 </div>
+
 @endsection
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
+
 // La página de inicio
 // Ruta que muestra el HTML (la que escribe el usuario en el navegador)
 Route::get('/', [ProductController::class, 'index'])->name('store.index');

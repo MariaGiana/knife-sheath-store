@@ -70,7 +70,7 @@
     </button>
 </td>
 
-@include('partials.delete-modal', ['product' => $product])
+@include('admin.delete-modal', ['product' => $product])
 
 </tr>
 @endforeach

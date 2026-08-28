@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <!-- FORMULARIO CONECTADO CON TU JS GLOBAL -->
+            <!-- FORMULARIO CONECTADO AL JS GLOBAL -->
             <form class="form-agregar-carrito" action="{{ route('cart.add', ['id' => 0]) }}" method="POST" id="form-modal-carrito">
                 @csrf
                 <div class="modal-body">
@@ -20,13 +20,20 @@
                     <p id="modal-desc" class="text-muted"></p>
                     <h4 class="text-primary fw-bold">$ <span id="modal-price">0</span></h4>
                     
-                    <!-- Input con la cantidad (opcional) -->
-                    <input type="hidden" name="quantity" value="1">
+                                <!-- Botón Anterior y siguiente-->
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(100%);"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(100%);"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Al ser type="submit", carrito-ajax.js lo interceptará automáticamente -->
                     <button type="submit" class="btn btn-custom-artesanal">
                         Agregar al Carrito
                     </button>
