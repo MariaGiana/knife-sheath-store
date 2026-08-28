@@ -58,45 +58,54 @@ public function edit($id)
     }    
 
 public function update(Request $request, $id)
-    {
-        $product = Product::with('fotos')->findOrFail($id);
-        
-        // 1. Actualizar datos básicos (name, price, etc)
-        $product->update($request->only(['name', 'precio', 'description_product']));
+{
+    // 1. Validar los datos antes de hacer nada (Igual que en store)
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'precio' => 'required|numeric|min:0',
+        'description_product' => 'required|string',
+        'foto1' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        'foto2' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        'foto3' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+    ]);
 
-        // 2. Gestionar las fotos
-        if (!$product->fotos) {
-            $product->fotos()->create([]); // Crea el registro si no existe
-        }
+    $product = Product::with('fotos')->findOrFail($id);
+    
+    // 2. Actualizar datos básicos (name, price, etc) con los datos ya validados
+    $product->update($request->only(['name', 'precio', 'description_product']));
 
-        $fotosData = [];
-        foreach (['foto1', 'foto2', 'foto3'] as $columna) {
-            if ($request->hasFile($columna)) {
-                $path = $request->file($columna)->store('products', 'public');
-                $fotosData[$columna] = $path;
-            }
-        }
-
-        if (!empty($fotosData)) {
-            $product->fotos()->update($fotosData);
-        }
-
-        return redirect()->route('admin.dashboard')->with('success', 'Producto actualizado con éxito');
+    // 3. Gestionar las fotos
+    if (!$product->fotos) {
+        $product->fotos()->create([]); // Crea el registro si no existe
     }
 
+    $fotosData = [];
+    foreach (['foto1', 'foto2', 'foto3'] as $columna) {
+        if ($request->hasFile($columna)) {
+            $path = $request->file($columna)->store('products', 'public');
+            $fotosData[$columna] = $path;
+        }
+    }
+
+    if (!empty($fotosData)) {
+        $product->fotos()->update($fotosData);
+    }
+
+    return redirect()->route('admin.dashboard')->with('success', 'Producto actualizado con éxito');
+}
 
 public function destroy($id)
     {
         $product = Product::findOrFail($id);
 
         // --- MODO SIMULACIÓN ---
-        //dd("Simulación: Se borraría el producto con ID: " . $product->id . " y nombre: " . $product->name);
+        dd("Simulación: Se borraría el producto con ID: " . $product->id . " y nombre: " . $product->name);
         // -----------------------
 
-        // borrar de verdad
-        $product->delete();
+        // BORRAR DE VERDAD (descomentar las siguientes líneas para habilitar el borrado real)
+        //$product->delete();
 
-        return redirect()->route('admin.dashboard')->with('success', 'Producto borrado con éxito');
+        //return redirect()->route('admin.dashboard')->with('success', 'Producto borrado con éxito');
     }
 
 }

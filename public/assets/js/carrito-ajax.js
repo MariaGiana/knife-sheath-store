@@ -153,5 +153,28 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error en cambio de input directo:', error));
     });
+document.addEventListener('click', function(event) {
+    const button = event.target.closest('.btn-abrir-modal');
+    if (!button) return;
+
+    const urlAccion = button.getAttribute('data-url');
+    const nombre = button.getAttribute('data-nombre');
+
+    const form = document.getElementById('form-delete-cart');
+    if (form) {
+        form.action = urlAccion;
+    }
+
+    const texto = document.getElementById('delete-modal-carrito');
+    if (texto) {
+        texto.innerHTML = `¿Estás seguro de que deseas quitar <strong>${nombre}</strong> del carrito?`;
+    }
+
+    const modalElement = document.getElementById('deleteCartModal');
+    if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+    }
+});
 
 }); 

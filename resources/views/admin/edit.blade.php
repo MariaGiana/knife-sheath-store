@@ -10,31 +10,34 @@
                 Editar: {{ $product->name }}
             </h3>
 
-            {{-- IMPORTANTE: Aquí la ruta lleva el ID y usamos el método PUT --}}
+            {{-- Formulario de edición --}}
             <form action="{{ route('admin.productos.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT') 
 
-                {{-- Carga de Imágenes (Igual que antes) --}}
+                {{-- Carga y visualización de Imágenes --}}
                 <div class="mb-4">
                     <label class="form-label small fw-bold">Imágenes actuales</label>
-                    <div class="d-flex gap-2 mb-2">
+                    <div class="d-flex gap-2 mb-3">
                         @foreach(['foto1', 'foto2', 'foto3'] as $f)
                             @if($product->fotos?->$f)
                                 <img src="{{ asset('storage/' . $product->fotos->$f) }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
                             @endif
                         @endforeach
                     </div>
-                    <label class="form-label small fw-bold">Actualizar imágenes</label>
-                    <input type="file" name="foto1" class="form-control mb-2">
-                    <input type="file" name="foto2" class="form-control mb-2">
-                    <input type="file" name="foto3" class="form-control">
+
+                    <label class="form-label small fw-bold">Actualizar imágenes (Opcional)</label>
+                    <input type="file" name="foto1" class="form-control mb-2" style="border: 1px solid rgba(51,51,59,0.2);">
+                    <input type="file" name="foto2" class="form-control mb-2" style="border: 1px solid rgba(51,51,59,0.2);">
+                    <input type="file" name="foto3" class="form-control" style="border: 1px solid rgba(51,51,59,0.2);">
+                    <div class="form-text text-muted small mt-1">Sube nuevas imágenes solo si deseas reemplazar las actuales.</div>
                 </div>
 
                 {{-- Campo Nombre con valor precargado --}}
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Nombre del Producto</label>
                     <input type="text" name="name" class="form-control" 
+                           style="border: 1px solid rgba(51,51,59,0.2);" 
                            value="{{ old('name', $product->name) }}" required>
                 </div>
 
@@ -42,13 +45,16 @@
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Precio</label>
                     <input type="number" name="precio" class="form-control" 
+                           style="border: 1px solid rgba(51,51,59,0.2);" 
                            value="{{ old('precio', $product->precio) }}" step="0.01" required>
                 </div>
 
                 {{-- Campo Descripción con valor precargado --}}
                 <div class="mb-4">
                     <label class="form-label small fw-bold">Descripción</label>
-                    <textarea name="description_product" class="form-control" rows="4" required>{{ old('description_product', $product->description_product) }}</textarea>
+                    <textarea name="description_product" class="form-control" 
+                              style="border: 1px solid rgba(51,51,59,0.2);" 
+                              rows="4" required>{{ old('description_product', $product->description_product) }}</textarea>
                 </div>
 
                 <div class="d-grid gap-2">
